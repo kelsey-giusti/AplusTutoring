@@ -1,0 +1,97 @@
+* {
+	font-family: Arial;
+}
+
+html, body {
+	background-color: #659D32;
+
+	width: 100%;
+}
+
+td {
+	text-align: center;
+}
+
+th {
+	text-align: center;
+}
+
+.navbar-default {
+	border-radius: 0px;
+	border: none;
+
+	background-color: #659D32;
+
+	margin: 0;
+	padding: 0px 15px;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #ffffff;
+}
+
+#content {
+	background-image: url("../images/chalkboard.jpg");
+}
+
+.vertical-center {
+  min-height: 84%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 84vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.title {
+	font-size: 64px;
+	color: #ffffff;
+
+	margin-top: 45px;
+}
+
+.subtitle {
+	font-size: 24px;
+	text-align: center;
+}
+
+#dashboard{
+    border: none;
+}
+
+#dashboard li a {
+	background-color:#ddd;
+	color: black;
+}
+
+#dashboard li.active a {
+	border-bottom-color: transparent;
+	background-color:#fff;
+}
+
+.dashboard-tab .tab-pane{  
+	border-top: 0;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-left-radius: 5px;
+	background-color:#fff;
+
+	padding: 10px;
+	min-height: 60%;
+	min-height: 60vh;
+	max-height: 60%;
+	max-height: 60vh;
+}
+
+.right-tabs .nav {
+    float: right;
+    border-bottom: 0px;
+}
+
+.right-tabs .nav li {
+	float: left;
+}
+
+.right-tabs .tab-content {
+    float: left;
+    width: 100%;
+}
