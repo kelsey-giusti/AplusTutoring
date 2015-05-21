@@ -267,7 +267,7 @@
                                 <h3 class="subtitle">April 13 - April 25</h3>
                                 <div class="row">
                                 	<form id="timecard">
-                                		<div class=".col-md-8">
+                                		<div class="col-md-10">
 	                                		<div class="table-responsive">
 		                  						<table class="table table-striped table-bordered table-condensed">
 													<thead>
@@ -281,71 +281,71 @@
 														<tr>
 															<td>Monday April 13</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Tuesday April 14</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Wednesday April 15</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Thursday April 16</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Friday April 17</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Saturday April 18</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 																									<tr>
 															<td>Monday April 20</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Tuesday April 21</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Wednesday April 22</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Thursday April 23</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Friday April 24</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 														<tr>
 															<td>Saturday April 25</td>
 															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="50"></textarea></label></td>
+															<td><label><textarea rows="2" cols="40"></textarea></label></td>
 														</tr>
 													</tbody>
 												</table>
 											</div>
 										</div>
-										<div class=".col-md-4">
+										<div class="col-md-2">
 											<h2 class="subtitle-sm">Hours: 0</h2>
 											<h2 class="subtitle-sm">$0.00</h2>
-											<input type="submit" value="Submit" class="btn btn-default pull-right" />
+											<input type="submit" value="Submit" class="btn btn-default center-block" />
 										</div>
 									</form>
 								</div>

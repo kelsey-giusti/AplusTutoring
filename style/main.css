@@ -55,6 +55,11 @@ th {
 	text-align: center;
 }
 
+.subtitle-sm {
+	font-size: 20px;
+	text-align: center;
+}
+
 #dashboard{
     border: none;
 }
