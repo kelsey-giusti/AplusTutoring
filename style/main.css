@@ -105,3 +105,80 @@ th {
 	max-height: 50vh;
 	overflow-y: auto;
 }
+
+/*HOME screen*/
+#homeMsg {
+	color:#fff;
+	font-family: arial;
+}
+
+#homeLogin {
+	background-color: #fff;
+	border-radius: 25px;
+	border: 2px solid #659D32;
+	padding: 20px;
+}
+
+#homeLogin h2 {
+	color: black;
+	font-family: arial;
+}
+
+#homeCreateUserLink {
+	float: right;
+}
+
+#homeBrowse {
+	padding: 15px;
+}
+
+#homeBrowseWrapper {
+	text-align: center;
+}
+/*END*/
+/*CONTACT screen*/
+#contactForm {
+	background-color: #fff;
+	border-radius: 25px;
+	border: 2px solid #659D32;
+	padding: 20px;
+}
+
+#formDesc {
+
+}
+
+#sendButton {
+	float: right;
+}
+
+#addressTitle {
+	color: #fff;
+	font-family: arial;
+}
+
+#address {
+	color: #fff;
+	font-family: arial;
+}
+/*END*/
+/*TUTOR browse screen*/
+.tutorOverview {
+	background-color: #fff;
+	border-radius: 25px;
+	border: 2px solid #659D32;
+	padding: 20px;
+	margin-top: 10px;
+}
+
+.photoid {
+	height: 100px;
+	width: 100px;
+}
+/**/
+/*TUTOR details*/
+.photoiddetails {
+	height:250px;
+	width: 250px;
+}
+/*END*/

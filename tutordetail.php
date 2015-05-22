@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+		<!-- Latest compiled Bootstrap JavaScript -->
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+		<!-- Custom CSS -->
+		<link rel="stylesheet" type="text/css" href="style/main.css">
+
+		<title>A+ Tutoring</title>
+	</head>
+
+	<body>
+		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="#">Home</a></li>
+						<li><a href="#">Tutors</a></li>
+						<li><a href="#">Contact Us</a></li> 
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-user"></span> Branka Johnson</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid vertical-center" id="content">
+
+			<img id="logo" src="images/logo.png" alt="logo" class=".img-responsive" />
+
+			<div class="container">
+				<h1 class="title">Jane Smith</h1>
+				<div class="right-tabs clearfix" >
+				
+                <ul class="nav nav-tabs" id="dashboard">
+					<li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+                    <li><a href="#schedule" data-toggle="tab">Schedule</a></li>
+                </ul>
+				
+                <div class="tab-content dashboard-tab">
+				
+				 <div class="tab-pane active" id="profile">
+                        <div class="row">
+                            <div class="col-md-12">
+									<div class="row">
+									  <div class="col-sm-5">
+										<img class="photoiddetails" src="#" alt="photoid" />
+									  </div>
+									  <div class="col-sm-7">
+										<b>Subjects:</b><br>
+										<ul>
+											<li>Subject 1</li>
+											<li>Subject 1</li>
+											<li>Subject 1</li>
+											<li>Subject 1</li>
+											<li>Subject 1</li>
+											<li>Subject 1</li>
+										</ul>				
+									  </div>
+									</div>
+                            </div>
+                        </div>
+						
+						 <div class="row">
+                            <div class="col-md-12">
+									<h3>Description</h3>
+									<p> Hello, This is me!</p>
+                            </div>
+                        </div>
+						
+                    </div>
+				
+                    <div class="tab-pane" id="schedule">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="subtitle"><span>&#9668</span> April 13 - April 18 <span>&#9658</span></h3>
+                                <div class="table-responsive">
+									<table class="table table-striped table-bordered">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Mon April 13</th>
+												<th>Tues April 14</th>
+												<th>Wed April 15</th>
+												<th>Thur April 16</th>
+												<th>Friday April 17</th>
+												<th>Sat April 18</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>2:00 - 3:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+											<tr>
+												<th>3:00 - 4:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+											<tr>
+												<th>4:00 - 5:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+											<tr>
+												<th>5:00 - 6:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+											<tr>
+												<th>6:00 - 7:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+											<tr>
+												<th>7:00 - 8:00</th>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+												<td>John</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+					
+					
+                   
+					
+					
+                </div>
+                </div>
+			</div>
+ 
+		</div>
+
+	</body>
+
+</html>
