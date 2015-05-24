@@ -16,6 +16,10 @@ th {
 	text-align: center;
 }
 
+b {
+	font-size: 18px;
+}
+
 .navbar-default {
 	border-radius: 0px;
 	border: none;
@@ -36,11 +40,16 @@ th {
 }
 
 .vertical-center {
-  min-height: 84%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 84vh; /* These two lines are counted as one :-)       */
+	min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 90vh; /* These two lines are counted as one :-)       */
 
-  display: flex;
-  align-items: flex-start;
+	max-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+	max-height: 90vh; /* These two lines are counted as one :-)       */
+
+	overflow-y: auto;
+
+	display: flex;
+	align-items: flex-start;
 }
 
 .title {
@@ -53,6 +62,11 @@ th {
 .subtitle {
 	font-size: 24px;
 	text-align: center;
+}
+
+.subtitle_right {
+	font-size: 24px;
+	display: inline-block;
 }
 
 .subtitle-sm {
@@ -144,14 +158,6 @@ th {
 	padding: 20px;
 }
 
-#formDesc {
-
-}
-
-#sendButton {
-	float: right;
-}
-
 #addressTitle {
 	color: #fff;
 	font-family: arial;
@@ -172,13 +178,14 @@ th {
 }
 
 .photoid {
-	height: 100px;
-	width: 100px;
+	height: 150px;
+	width: 150px;
 }
 /**/
 /*TUTOR details*/
 .photoiddetails {
 	height:250px;
 	width: 250px;
+	margin-left: 10px;
 }
 /*END*/

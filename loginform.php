@@ -36,7 +36,7 @@
 			}
 
 			$log = "Login";
-			$url = "loginform.php";
+			$url = "login.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
 				$url = "logout.php";
@@ -52,7 +52,7 @@
 					<ul class="nav navbar-nav">
 						<li><a href="home.php">Home</a></li>
 						<li><a href="browsetutor.php">Tutors</a></li>
-						<li><a href="#">Contact Us</a></li> 
+						<li><a href="contact.php">Contact Us</a></li> 
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
@@ -68,50 +68,25 @@
 			
 			<div class="container">
 			
-				<h1 class="title">Contact Us</h1>
+				<h1 class="title">&nbsp;</h1>
 				
 				
 				<div class="row">
-					<div id="contactForm" class="col-sm-6">
 					
-						<h2>Contact form</h2>
-						 <form role="form">
-							<div class="form-group">
-							  <label for="name">Name:</label>
-							  <input type="text" class="form-control" id="name" placeholder="Enter name*">
-							</div>
+					<div id="homeLogin" class="col-md-8 col-md-offset-2">
+						<h2>Login</h2>
+						 <form role="form" action="login.php" method="post">
 							<div class="form-group">
 							  <label for="email">Email:</label>
-							  <input type="email" class="form-control" id="email" placeholder="Enter email*">
+							  <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
 							</div>
 							<div class="form-group">
-							  <label for="contactNumber">Contact Number:</label>
-							  <input type="tel" class="form-control" id="contactNumber" placeholder="Contact number*">
-							</div>
-							<div class="form-group">
-							  <label for="message">Message:</label>
-							  <textarea class="form-control" id="message" placeholder="Message*" rows="5"></textarea>
-							</div>
-							<button type="submit" class="btn btn-default">Send Message</button>
+							  <label for="pwd">Password:</label>
+							  <input type="password" name="password" class="form-control" id="pwd" placeholder="Enter password">
+							</div>		
+							<button type="submit" class="btn btn-default">Login</button>
 						 </form>
-							  
-						
-					</div>
-					<div class="col-sm-6">
-						<p id="address">
-							<b>Telephone:</b> +1 (408) 857-0075<br/>
-							<b>Email:</b> kaykim@aplus.com <br />
-							<br/>
-						</p>
-						
-						<iframe width="100%" height="380px" frameborder="0" style="border:0"
-src="https://www.google.com/maps/embed/v1/place?q=A%20Plus%20Student%20Books%2C%20Saratoga%20Avenue%2C%20San%20Jose%2C%20CA%2C%20United%20States&key=AIzaSyCayhOK2qlfGsNwPyQjytj07QpWqE6f3zM"></iframe>
-					
-					
-						
-
-
-							  
+							  <a id="homeCreateUserLink" href="newuser.php">Create new account</a>					
 					</div>
 				</div>
 				

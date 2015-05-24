@@ -18,6 +18,30 @@
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
 		<title>A+ Tutoring</title>
+
+		<?php
+			session_start();
+
+			$name = "Profile";
+			$profile = "loginform.php";
+			if (isset($_SESSION['Name'])) {
+				$name = $_SESSION['Name'];
+				if($_SESSION['Type'] == 'Tutor') {
+					$profile = "tutordashboard.php";
+				} else if($_SESSION['Type'] == 'Admin') {
+					$profile = "admindashboard.php";
+				} else {
+					$profile = "home.php";
+				}
+			}
+
+			$log = "Login";
+			$url = "loginform.php";
+			if(isset($_SESSION['Name'])) {
+				$log= "Logout";
+				$url = "logout.php";
+			}
+		?>
 	</head>
 
 	<body>
@@ -27,12 +51,12 @@
 				<div>
 					<ul class="nav navbar-nav">
 						<li><a href="#">Home</a></li>
-						<li><a href="#">Tutors</a></li>
-						<li><a href="#">Contact Us</a></li> 
+						<li><a href="browsetutor.php">Tutors</a></li>
+						<li><a href="contact.php">Contact Us</a></li> 
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
+						<li><a href="<?=$url?>"><span class="glyphicon glyphicon-log-in"></span> <?=$log?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -49,7 +73,7 @@
 				
 				<div class="row">
 				
-					<div class="col-sm-6">
+					<div class="col-md-6">
 						<h1 class="title">Welcome!</h1>
 						<p id="homeMsg">
 							This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message.This is our welcome message.
@@ -57,28 +81,25 @@
 						</p>
 						
 						<div id="homeBrowseWrapper">
-							<button id="homeBrowse">Browse Tutor Now</button>
+							<a href="browsetutor.php" class="btn btn-default btn-large" id="homeBrowse">Browse Tutors Now</a>
 						</div>
 						
 					</div>
 					
-					<div id="homeLogin" class="col-sm-6">
+					<div id="homeLogin" class="col-md-6">
 						<h2>Already have an account?</h2>
-						 <form role="form">
+						 <form role="form" action="login.php" method="post">
 							<div class="form-group">
 							  <label for="email">Email:</label>
-							  <input type="email" class="form-control" id="email" placeholder="Enter email">
+							  <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
 							</div>
 							<div class="form-group">
 							  <label for="pwd">Password:</label>
-							  <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-							</div>
-							<div class="checkbox">
-							  <label><input type="checkbox"> Remember me</label>
-							</div>				
+							  <input type="password" name="password" class="form-control" id="pwd" placeholder="Enter password">
+							</div>		
 							<button type="submit" class="btn btn-default">Login</button>
 						 </form>
-							  <a id="homeCreateUserLink" href="#">Create new account</a>					
+							  <a id="homeCreateUserLink" href="newuser.php">Create new account</a>					
 					</div>
 				</div>
 				

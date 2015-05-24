@@ -18,6 +18,31 @@
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
 		<title>A+ Tutoring</title>
+
+		<?php
+			session_start();
+
+			if(!isset($_SESSION['UserID']) || !isset($_SESSION['Name']) || !isset($_SESSION['Type']) || $_SESSION['Type'] != 'Admin') {
+				echo "<script>
+				alert('You must be logged in as an administrator to view this page');
+				window.location.href='home.php';
+				</script>";
+			}
+
+			$name = "Profile";
+			$profile = "loginform.php";
+			if (isset($_SESSION['Name'])) {
+				$name = $_SESSION['Name'];
+				if($_SESSION['Type'] == 'Tutor') {
+					$profile = "tutordashboard.php";
+				} else if($_SESSION['Type'] == 'Admin') {
+					$profile = "admindashboard.php";
+				} else {
+					$profile = "home.php";
+				}
+			}
+		?>
+
 	</head>
 
 	<body>
@@ -26,13 +51,13 @@
 			<div class="container-fluid">
 				<div>
 					<ul class="nav navbar-nav">
-						<li><a href="#">Home</a></li>
-						<li><a href="#">Tutors</a></li>
-						<li><a href="#">Contact Us</a></li> 
+						<li><a href="home.php">Home</a></li>
+						<li><a href="browsetutor.php">Tutors</a></li>
+						<li><a href="contact.php">Contact Us</a></li> 
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span> Branka Johnson</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$_SESSION['Name']?></a></li>
+						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>
