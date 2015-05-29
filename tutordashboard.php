@@ -41,6 +41,75 @@
 					$profile = "home.php";
 				}
 			}
+
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$dbname = "aplus";
+
+			// Create connection
+			$conn = new mysqli($servername, $username, $password, $dbname);
+
+			// Check connection
+			if ($conn->connect_error) {
+			    die("Connection failed: " . $conn->connect_error);
+			}
+
+			// Get Tutor Data
+			$id = $_SESSION['UserID'];
+			$sql = "SELECT AvailableMonday, AvailableTuesday, AvailableWednesday, AvailableThursday, AvailableFriday, AvailableSaturday FROM tutor WHERE UserID = " . $id;
+			$result = $conn->query($sql);
+			$row = null;
+			if ($result->num_rows > 0) {
+				$row = $result->fetch_assoc();
+			}
+
+			// Get Dates
+			$monday = date("D M d", strtotime('monday this week'));
+			$tuesday = date("D M d", strtotime('tuesday this week'));
+			$wednesday = date("D M d", strtotime('wednesday this week'));
+			$thursday = date("D M d", strtotime('thursday this week'));
+			$friday = date("D M d", strtotime('friday this week'));
+			$saturday = date("D M d", strtotime('saturday this week'));
+
+			$monday_title = date("M d", strtotime('monday this week'));
+			$saturday_title = date("M d", strtotime('saturday this week'));
+
+			$monday_db = date("Y-m-d", strtotime('monday this week'));
+			$saturday_db = date("Y-m-d", strtotime('saturday this week'));
+
+			// Get Student Names
+			$sql = "SELECT UserID, Name FROM user WHERE Type = 'Student'";
+			$result = $conn->query($sql);
+			$students = array();
+			if($result->num_rows > 0) {
+				while($s = $result->fetch_assoc()){
+			    	$students[$s['UserID']] = $s['Name'];
+				}
+			}
+
+			// Get Sessions
+			$sql = "SELECT StudentID, Date, Block FROM session WHERE TutorID = " . $id . " AND Date BETWEEN '" . $monday_db . "' AND '" . $saturday_db . "' ORDER BY Block, Date";
+			$result = $conn->query($sql);
+			$blocks = array(array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"),
+							array("open", "open", "open", "open", "open", "open"));
+			if($result->num_rows > 0) {
+				while($session = $result->fetch_assoc()){
+					$blocks[$session['Block']-1][date("w", strtotime($session['Date'])) - 1] = $students[$session['StudentID']];
+				}
+			}
+
+			$conn->close();
 		?>
 	</head>
 
@@ -76,76 +145,130 @@
                 </ul>
                 <div class="tab-content dashboard-tab">
                     <div class="tab-pane active" id="schedule">
-                        <div class="row">
+                       <div class="row">
                             <div class="col-md-12">
-                                <h3 class="subtitle"><span>&#9668</span> April 13 - April 18 <span>&#9658</span></h3>
+                                <h3 class="subtitle"><span>&#9668</span> <?=$monday_title?> - <?=$saturday_title?> <span>&#9658</span></h3>
                                 <div class="table-responsive">
 									<table class="table table-striped table-bordered">
 										<thead>
 											<tr>
 												<th></th>
-												<th>Mon April 13</th>
-												<th>Tues April 14</th>
-												<th>Wed April 15</th>
-												<th>Thur April 16</th>
-												<th>Friday April 17</th>
-												<th>Sat April 18</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<th>" . $monday . "</th>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<th>" . $tuesday . "</th>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<th>" . $wednesday . "</th>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<th>" . $thursday . "</th>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<th>" . $friday . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<th>" . $saturday . "</th>";} ?>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
+												<th>8:00 - 9:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[0][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[0][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[0][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[0][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[0][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[0][5] . "</td>";} ?>
+											</tr>
+											<tr>
+												<th>9:00 - 10:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[1][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[1][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[1][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[1][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[1][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[1][5] . "</td>";} ?>
+											</tr>
+											<tr>
+												<th>10:00 - 11:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[2][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[2][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[2][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[2][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[2][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[2][5] . "</td>";} ?>
+											</tr>
+											<tr>
+												<th>11:00 - 12:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[3][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[3][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[3][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[3][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[3][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[3][5] . "</td>";} ?>
+											</tr>
+											<tr>
+												<th>12:40 - 1:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[4][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[4][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[4][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[4][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[4][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[4][5] . "</td>";} ?>
+											</tr>
+											<tr>
+												<th>1:00 - 2:00</th>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[5][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[5][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[5][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[5][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[5][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[5][5] . "</td>";} ?>
+											</tr>
+											<tr>
 												<th>2:00 - 3:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[6][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[6][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[6][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[6][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[6][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[6][5] . "</td>";} ?>
 											</tr>
 											<tr>
 												<th>3:00 - 4:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[7][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[7][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[7][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[7][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[7][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[7][5] . "</td>";} ?>
 											</tr>
 											<tr>
 												<th>4:00 - 5:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[8][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[8][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[8][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[8][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[8][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[8][5] . "</td>";} ?>
 											</tr>
 											<tr>
 												<th>5:00 - 6:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[9][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[9][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[9][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[9][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[9][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[9][5] . "</td>";} ?>
 											</tr>
 											<tr>
 												<th>6:00 - 7:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[10][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[10][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[10][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[10][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[10][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[10][5] . "</td>";} ?>
 											</tr>
 											<tr>
 												<th>7:00 - 8:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
+												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[11][0] . "</td>";} ?>
+												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[11][1] . "</td>";} ?>
+												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[11][2] . "</td>";} ?>
+												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[11][3] . "</td>";} ?>
+												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[11][4] . "</td>";} ?>
+												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[11][5] . "</td>";} ?>
 											</tr>
 										</tbody>
 									</table>

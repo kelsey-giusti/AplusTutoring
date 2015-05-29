@@ -23,8 +23,6 @@
 
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-			echo $row['UserID'] . " " . $row['Name'] . " " . $row['Type'];
-
 			$_SESSION['UserID'] = $row['UserID'];
 			$_SESSION['Name'] = $row['Name'];
 			$_SESSION['Type'] = $row['Type'];
