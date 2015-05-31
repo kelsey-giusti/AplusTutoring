@@ -75,22 +75,22 @@
 					<div id="contactForm" class="col-sm-6">
 					
 						<h2>Contact form</h2>
-						 <form role="form">
+						 <form role="form" action="sendmail.php" method="post">
 							<div class="form-group">
 							  <label for="name">Name:</label>
-							  <input type="text" class="form-control" id="name" placeholder="Enter name*">
+							  <input name="contactname" type="text" class="form-control" id="contactname" placeholder="Enter name*">
 							</div>
 							<div class="form-group">
 							  <label for="email">Email:</label>
-							  <input type="email" class="form-control" id="email" placeholder="Enter email*">
+							  <input name="contactemail" type="email" class="form-control" id="contactemail" placeholder="Enter email*">
 							</div>
 							<div class="form-group">
 							  <label for="contactNumber">Contact Number:</label>
-							  <input type="tel" class="form-control" id="contactNumber" placeholder="Contact number*">
+							  <input name="contacttelp" type="tel" class="form-control" id="contacttelp" placeholder="Contact number*">
 							</div>
 							<div class="form-group">
 							  <label for="message">Message:</label>
-							  <textarea class="form-control" id="message" placeholder="Message*" rows="5"></textarea>
+							  <textarea name="contactmessage" class="form-control" id="contactmessage" placeholder="Message*" rows="5"></textarea>
 							</div>
 							<button type="submit" class="btn btn-default">Send Message</button>
 						 </form>
