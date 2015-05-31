@@ -17,6 +17,26 @@
 		<!-- Custom CSS -->
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
+		<!-- Scheduling JavaScript -->
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('table').on('click', 'td', function(e) {  
+				    var day = $(e.delegateTarget.tHead.rows[0].cells[this.cellIndex]).text();
+				    var block = $(this).parent().parent().children().index($(this).parent()) + 1;
+				    var studentName = $(this).text();
+  					var tutorID = $('#tutorID').val();
+  					var tutorName = $('#tutorName').text();
+				    
+				    var user = $('#user').text().slice(1);
+				    if(user === studentName || studentName === "open") {
+				    	window.location.href = "schedule.php?name=" + tutorName + "&id=" + tutorID + "&day=" + day + "&block=" + block + "&student=" + studentName;
+					} else {
+						alert("Please select an open block to schedule a session or one of your sessions to cancel");
+					}
+				})
+			});
+		</script>
+
 		<title>A+ Tutoring</title>
 
 		<?php
@@ -56,6 +76,14 @@
 			// Check connection
 			if ($conn->connect_error) {
 			    die("Connection failed: " . $conn->connect_error);
+			}
+
+			// Display correct tab
+			$home = "active";
+			$schedule = "";
+			if(!empty($_GET["schedule"])) {
+				$schedule = "active";
+				$home = "";
 			}
 
 			// Get Tutor Data
@@ -117,7 +145,7 @@
 	</head>
 
 	<body>
-		
+		<input id="tutorID" type="hidden" name="tutorID" value="<?=$id?>">
 		<nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<div>
@@ -127,7 +155,7 @@
 						<li><a href="contact.php">Contact Us</a></li> 
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
+						<li><a id="user" href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
 						<li><a href="<?=$url?>"><span class="glyphicon glyphicon-log-in"></span> <?=$log?></a></li>
 					</ul>
 				</div>
@@ -139,17 +167,17 @@
 			<img id="logo" src="images/logo.png" alt="logo" class=".img-responsive" />
 
 			<div class="container">
-				<h1 class="title"><?=$row['Name']?></h1>
+				<h1 class="title" id="tutorName"><?=$row['Name']?></h1>
 				<div class="right-tabs clearfix" >
 				
                 <ul class="nav nav-tabs" id="dashboard">
-					<li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                    <li><a href="#schedule" data-toggle="tab">Schedule</a></li>
+					<li class="<?=$home?>"><a href="#profile" data-toggle="tab">Profile</a></li>
+                    <li class="<?=$schedule?>"><a href="#schedule" data-toggle="tab">Schedule</a></li>
                 </ul>
 				
                 <div class="tab-content dashboard-tab">
 				
-					<div class="tab-pane active" id="profile">
+					<div class="tab-pane <?=$home?>" id="profile">
                         <div class="row">
                             <div class="col-md-4">
 								<img class="photoiddetails" src="images/<?=$row['Image']?>" alt="photoid" />
@@ -175,7 +203,7 @@
                         </div>
                     </div>
 				
-                    <div class="tab-pane" id="schedule">
+                    <div class="tab-pane <?=$schedule?>" id="schedule">
                         <div class="row">
                             <div class="col-md-12">
                                 <h3 class="subtitle"><span>&#9668</span> <?=$monday_title?> - <?=$saturday_title?> <span>&#9658</span></h3>
@@ -230,7 +258,7 @@
 												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[3][5] . "</td>";} ?>
 											</tr>
 											<tr>
-												<th>12:40 - 1:00</th>
+												<th>12:00 - 1:00</th>
 												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[4][0] . "</td>";} ?>
 												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[4][1] . "</td>";} ?>
 												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[4][2] . "</td>";} ?>
@@ -304,14 +332,12 @@
 										</tbody>
 									</table>
 								</div>
+								<br />
+								<p class="pull-right"><strong>Select a time to schedule or cancel a session.</strong></p>
                             </div>
                         </div>
                     </div>
-					
-					
-                   
-					
-					
+                   					
                 </div>
                 </div>
 			</div>

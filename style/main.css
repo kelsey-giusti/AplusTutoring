@@ -20,6 +20,15 @@ b {
 	font-size: 18px;
 }
 
+td {
+	cursor: pointer;
+}
+
+.form-inline > * {
+   margin-right: 15px;
+   padding: 5px;
+}
+
 .navbar-default {
 	border-radius: 0px;
 	border: none;
@@ -126,7 +135,7 @@ b {
 	font-family: arial;
 }
 
-#homeLogin {
+#homeLogin, #scheduleSession, #cancelSession {
 	background-color: #fff;
 	border-radius: 25px;
 	border: 2px solid #659D32;

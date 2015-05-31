@@ -32,7 +32,7 @@
 			} else if ($_SESSION['Type']== 'Admin') {
 				header("Location: admindashboard.php");
 			} else if ($_SESSION['Type'] == 'Student') {
-				header("Location: home.php");
+				header("Location: browsetutor.php");
 			} else {
 				echo "Error: Type not found";
 			}
