@@ -155,6 +155,24 @@
 				}
 			}
 
+			// Get Availability
+			$sql = "SELECT Day, Block FROM availability WHERE TutorID = " . $id . " ORDER BY Block, Day";
+			$result = $conn->query($sql);
+			$checks = array();
+			for($i = 0; $i < 12; $i++) {
+				$check = array();
+				for($y = 0; $y < 6; $y++) {
+					array_push($check, "");
+				}
+				array_push($checks, $check);
+			}
+
+			if($result->num_rows > 0) {
+				while($a = $result->fetch_assoc()){
+					$checks[$a['Block']-1][$a['Day']-1] = "checked";
+				}
+			}
+
 			// Get Sessions
 			$sql = "SELECT StudentID, Date, Block FROM session WHERE TutorID = " . $id . " AND Date BETWEEN '" . $monday_db . "' AND '" . $saturday_db . "' ORDER BY Block, Date";
 			$result = $conn->query($sql);
@@ -162,7 +180,11 @@
 			for($i = 0; $i < 12; $i++) {
 				$block = array();
 				for($y = 0; $y < 6; $y++) {
-					array_push($block, "open");
+					if($checks[$i][$y] == 'checked') {
+						array_push($block, "open");
+					} else {
+						array_push($block, "unavailable");
+					}
 				}
 				array_push($blocks, $block);
 			}
