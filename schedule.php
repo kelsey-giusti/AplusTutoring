@@ -58,9 +58,9 @@
 			if (isset($_SESSION['Name'])) {
 				$name = $_SESSION['Name'];
 				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php";
+					$profile = "tutordashboard.php?location=0";
 				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php";
+					$profile = "admindashboard.php?location=0";
 				} else {
 					$profile = "home.php";
 				}

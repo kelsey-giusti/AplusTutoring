@@ -34,11 +34,11 @@
 			$_SESSION['Type'] = $row['Type'];
 
 			if ($_SESSION['Type'] == 'Tutor') {
-				header("Location: tutordashboard.php");
+				header("Location: tutordashboard.php?location=0");
 			} else if ($_SESSION['Type']== 'Admin') {
-				header("Location: admindashboard.php");
+				header("Location: admindashboard.php?location=0");
 			} else if ($_SESSION['Type'] == 'Student') {
-				header("Location: home.php");
+				header("Location: browsetutor.php");
 			} else {
 				echo "Error: Type not found";
 			}

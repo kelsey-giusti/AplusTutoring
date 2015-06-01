@@ -29,6 +29,15 @@ td {
    padding: 5px;
 }
 
+#back, #forward {
+	cursor: pointer;
+}
+
+.inactive {
+	opacity: .5;
+	cursor: auto;
+}
+
 .navbar-default {
 	border-radius: 0px;
 	border: none;

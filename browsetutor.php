@@ -27,11 +27,11 @@
 			if (isset($_SESSION['Name'])) {
 				$name = $_SESSION['Name'];
 				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php";
+					$profile = "tutordashboard.php?location=0";
 				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php";
+					$profile = "admindashboard.php?location=0";
 				} else {
-					$profile = "home.php";
+					$profile = "browsetutor.php";
 				}
 			}
 
@@ -118,7 +118,7 @@
 												($row["AvailableSaturday"] == 1 ? "Sat" : "")
 											."</div>
 										</div>
-											  <a id=\"homeCreateUserLink\" href=\"tutordetail.php?id=". $row["UserID"]."\">details >></a>		  
+											  <a id=\"homeCreateUserLink\" href=\"tutordetail.php?id=". $row["UserID"]."&location=0\">details >></a>		  
 									</div>
 								</div>";
 			    		}

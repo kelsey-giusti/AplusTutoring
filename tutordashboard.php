@@ -17,11 +17,60 @@
 		<!-- Custom CSS -->
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
+		<!-- JavaScript Helpers -->
+		<script>
+			function getQueryVariable(variable)
+			{
+			       var query = window.location.search.substring(1);
+			       var vars = query.split("&");
+			       for (var i=0;i<vars.length;i++) {
+			               var pair = vars[i].split("=");
+			               if(pair[0] == variable){return pair[1];}
+			       }
+			       return(false);
+			}
+		</script>
+
+		<!-- Schedule Control JavaScript -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#back").click(function() {
+					if(getQueryVariable('location') > 0) {
+						var location = parseInt(getQueryVariable('location')) - 1;
+						window.location.href = "tutordashboard.php?&location=" + location + "&schedule=true";
+					}
+				});
+				$("#forward").click(function() {
+					var location = parseInt(getQueryVariable('location')) + 1;
+					window.location.href = "tutordashboard.php?&location=" + location + "&schedule=true";
+				});
+			});
+		</script>
+
+		<!-- Form Control JavaScript -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#all").click(function() {
+					if($(this).prop('checked')) {
+						$("form input:checkbox").prop('checked', true);
+					}
+					$('#none').prop('checked', false);
+				});
+				$("#none").click(function() {
+					if($(this).prop('checked')) {
+						$("form input:checkbox").prop('checked', false);
+					}
+					$('#none').prop('checked', true);
+				});
+			});
+		</script>
+
 		<title>A+ Tutoring</title>
 
 		<?php
 			session_start();
 
+			// Get User Info
 			if(!isset($_SESSION['UserID']) || !isset($_SESSION['Name']) || !isset($_SESSION['Type']) || $_SESSION['Type'] != 'Tutor') {
 				echo "<script>
 				alert('You must be logged in as a tutor to view this page');
@@ -34,12 +83,17 @@
 			if (isset($_SESSION['Name'])) {
 				$name = $_SESSION['Name'];
 				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php";
+					$profile = "tutordashboard.php?location=0";
 				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php";
+					$profile = "admindashboard.php?location=0";
 				} else {
-					$profile = "home.php";
+					$profile = "browsetutor.php";
 				}
+			}
+
+			$back="";
+			if($_GET['location'] < 1) {
+				$back="inactive";
 			}
 
 			$servername = "localhost";
@@ -65,18 +119,18 @@
 			}
 
 			// Get Dates
-			$monday = date("D M d", strtotime('monday this week'));
-			$tuesday = date("D M d", strtotime('tuesday this week'));
-			$wednesday = date("D M d", strtotime('wednesday this week'));
-			$thursday = date("D M d", strtotime('thursday this week'));
-			$friday = date("D M d", strtotime('friday this week'));
-			$saturday = date("D M d", strtotime('saturday this week'));
+			$monday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('monday this week')));
+			$tuesday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('tuesday this week')));
+			$wednesday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('wednesday this week')));
+			$thursday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('thursday this week')));
+			$friday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('friday this week')));
+			$saturday = date("D M d", strtotime($_GET['location']*7 . ' days' ,strtotime('saturday this week')));
 
-			$monday_title = date("M d", strtotime('monday this week'));
-			$saturday_title = date("M d", strtotime('saturday this week'));
+			$monday_title = date("M d", strtotime($_GET['location']*7 . ' days' ,strtotime('monday this week')));
+			$saturday_title = date("M d", strtotime($_GET['location']*7 . ' days' ,strtotime('saturday this week')));
 
-			$monday_db = date("Y-m-d", strtotime('monday this week'));
-			$saturday_db = date("Y-m-d", strtotime('saturday this week'));
+			$monday_db = date("Y-m-d", strtotime($_GET['location']*7 . ' days' ,strtotime('monday this week')));
+			$saturday_db = date("Y-m-d", strtotime($_GET['location']*7 . ' days' ,strtotime('saturday this week')));
 
 			// Get Student Names
 			$sql = "SELECT UserID, Name FROM user WHERE Type = 'Student'";
@@ -91,21 +145,36 @@
 			// Get Sessions
 			$sql = "SELECT StudentID, Date, Block FROM session WHERE TutorID = " . $id . " AND Date BETWEEN '" . $monday_db . "' AND '" . $saturday_db . "' ORDER BY Block, Date";
 			$result = $conn->query($sql);
-			$blocks = array(array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"),
-							array("open", "open", "open", "open", "open", "open"));
+			$blocks = array();
+			for($i = 0; $i < 12; $i++) {
+				$block = array();
+				for($y = 0; $y < 6; $y++) {
+					array_push($block, "open");
+				}
+				array_push($blocks, $block);
+			}
+
 			if($result->num_rows > 0) {
 				while($session = $result->fetch_assoc()){
 					$blocks[$session['Block']-1][date("w", strtotime($session['Date'])) - 1] = $students[$session['StudentID']];
+				}
+			}
+
+			// Get Availability
+			$sql = "SELECT Day, Block FROM availability WHERE TutorID = " . $id . " ORDER BY Block, Day";
+			$result = $conn->query($sql);
+			$checks = array();
+			for($i = 0; $i < 12; $i++) {
+				$check = array();
+				for($y = 0; $y < 6; $y++) {
+					array_push($check, "");
+				}
+				array_push($checks, $check);
+			}
+
+			if($result->num_rows > 0) {
+				while($a = $result->fetch_assoc()){
+					$checks[$a['Block']-1][$a['Day']-1] = "checked";
 				}
 			}
 
@@ -141,13 +210,12 @@
                 <ul class="nav nav-tabs" id="dashboard">
                     <li class="active"><a href="#schedule" data-toggle="tab">Schedule</a></li>
                     <li><a href="#sessions" data-toggle="tab">Availability</a></li>
-                    <li><a href="#timecard" data-toggle="tab">Timecard</a></li>
                 </ul>
                 <div class="tab-content dashboard-tab">
                     <div class="tab-pane active" id="schedule">
                        <div class="row">
                             <div class="col-md-12">
-                                <h3 class="subtitle"><span>&#9668</span> <?=$monday_title?> - <?=$saturday_title?> <span>&#9658</span></h3>
+                                <h3 class="subtitle"><span class="<?=$back?>" id="back">&#9668</span> <?=$monday_title?> - <?=$saturday_title?> <span id="forward">&#9658</span></h3>
                                 <div class="table-responsive">
 									<table class="table table-striped table-bordered">
 										<thead>
@@ -162,114 +230,25 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<th>8:00 - 9:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[0][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[0][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[0][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[0][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[0][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[0][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>9:00 - 10:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[1][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[1][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[1][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[1][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[1][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[1][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>10:00 - 11:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[2][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[2][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[2][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[2][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[2][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[2][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>11:00 - 12:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[3][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[3][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[3][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[3][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[3][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[3][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>12:40 - 1:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[4][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[4][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[4][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[4][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[4][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[4][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>1:00 - 2:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[5][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[5][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[5][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[5][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[5][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[5][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>2:00 - 3:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[6][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[6][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[6][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[6][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[6][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[6][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>3:00 - 4:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[7][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[7][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[7][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[7][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[7][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[7][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>4:00 - 5:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[8][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[8][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[8][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[8][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[8][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[8][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>5:00 - 6:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[9][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[9][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[9][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[9][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[9][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[9][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>6:00 - 7:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[10][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[10][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[10][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[10][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[10][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[10][5] . "</td>";} ?>
-											</tr>
-											<tr>
-												<th>7:00 - 8:00</th>
-												<?php if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[11][0] . "</td>";} ?>
-												<?php if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[11][1] . "</td>";} ?>
-												<?php if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[11][2] . "</td>";} ?>
-												<?php if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[11][3] . "</td>";} ?>
-												<?php if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[11][4] . "</td>";} ?>
-												<?php if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[11][5] . "</td>";} ?>
-											</tr>
+											<?
+												$start = 8;
+												$end = 9;
+												for($i = 0; $i < 12; $i++) {
+													echo "<tr>";
+													echo "<th>" . $start . ":00 - " . $end . ":00" . "</th>";
+													if ($row["AvailableMonday"] == 1) {echo "<td>" . $blocks[$i][0] . "</td>";}
+													if ($row["AvailableTuesday"] == 1) {echo "<td>" . $blocks[$i][1] . "</td>";}
+													if ($row["AvailableWednesday"] == 1) {echo "<td>" . $blocks[$i][2] . "</td>";}
+													if ($row["AvailableThursday"] == 1) {echo "<td>" . $blocks[$i][3] . "</td>";}
+													if ($row["AvailableFriday"] == 1) {echo "<td>" . $blocks[$i][4] . "</td>";}
+													if ($row["AvailableSaturday"] == 1) {echo "<td>" . $blocks[$i][5] . "</td>";}
+													echo "</tr>";
+													$start ++;
+													$end ++;
+													if($start == 13) $start = 1;
+													if($end == 13) $end = 1;
+												}
+											?>
 										</tbody>
 									</table>
 								</div>
@@ -277,226 +256,60 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="sessions">
+                    	<h3 class="subtitle">Availability</h3>
                         <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="subtitle">Availability</h3>
-                                <div class="table-responsive">
-									<table class="table table-striped table-bordered table-condensed">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Monday</th>
-												<th>Tuesday</th>
-												<th>Wednesday</th>
-												<th>Thursday</th>
-												<th>Friday</th>
-												<th>Saturday</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>8:00 - 9:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>9:00 - 10:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>10:00 - 11:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>11:00 - 12:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>12:00 - 1:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>1:00 - 2:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>2:00 - 3:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>3:00 - 4:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>4:00 - 5:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>5:00 - 6:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>6:00 - 7:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-											<tr>
-												<th>7:00 - 8:00</th>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-												<td><label><input type="checkbox"></label></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="timecard">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="subtitle">April 13 - April 25</h3>
-                                <div class="row">
-                                	<form id="timecard">
-                                		<div class="col-md-10">
-	                                		<div class="table-responsive">
-		                  						<table class="table table-striped table-bordered table-condensed">
-													<thead>
-														<tr>
-															<th>Date</th>
-															<th>Hours</th>
-															<th>Notes</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>Monday April 13</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Tuesday April 14</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Wednesday April 15</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Thursday April 16</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Friday April 17</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Saturday April 18</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-																									<tr>
-															<td>Monday April 20</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Tuesday April 21</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Wednesday April 22</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Thursday April 23</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Friday April 24</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-														<tr>
-															<td>Saturday April 25</td>
-															<td><label><input type="number" name="quantity" min="0" max="8" value="0"></label></td>
-															<td><label><textarea rows="2" cols="40"></textarea></label></td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-										</div>
-										<div class="col-md-2">
-											<h2 class="subtitle-sm">Hours: 0</h2>
-											<h2 class="subtitle-sm">$0.00</h2>
-											<input type="submit" value="Submit" class="btn btn-default center-block" />
-										</div>
-									</form>
-								</div>
-                            </div>
+                        	<form action="saveavailability.php" method="post">
+	                            <div class="col-md-10">
+	                                <div class="table-responsive">
+										<table class="table table-striped table-bordered table-condensed">
+											<thead>
+												<tr>
+													<th></th>
+													<th>Monday</th>
+													<th>Tuesday</th>
+													<th>Wednesday</th>
+													<th>Thursday</th>
+													<th>Friday</th>
+													<th>Saturday</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?
+													$start = 8;
+													$end = 9;
+													for($i = 0; $i < 12; $i++) {
+														echo "<tr>";
+
+														echo "<th>" . $start . ":00 - " . $end . ":00" . "</th>";
+														for($y = 0; $y < 6; $y++) {
+															echo "<td><label><input name=\"available[]\" type=\"checkbox\" value=\"" . ($i+1) . " " . ($y+1) . "\"" . $checks[$i][$y] . "></label></td>";
+														}
+														echo "</tr>";
+														$start ++;
+														$end ++;
+														if($start == 13) $start = 1;
+														if($end == 13) $end = 1;
+													}
+												?>
+											</tbody>
+										</table>
+									</div>
+	                            </div>
+	                            <div class="col-md-2">
+	                            	<input type="hidden" name="tutorID" value="<?=$id?>">
+	                            	<input type="hidden" name="location" value="<?=$_GET['location']?>">
+	                            	<br />
+	                            	<div class="form-group">
+	                            		<input type="checkbox" id="all" />Select All
+	                            	</div>
+	                            	<div class="form-group">
+	                            		<input type="checkbox" id="none" />Unselect All
+	                            	</div>
+	                            	<div class="form-group">
+										<button type="submit" class="btn btn-large btn-default">Save</button>
+									</div>
+	                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

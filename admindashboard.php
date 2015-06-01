@@ -17,11 +17,42 @@
 		<!-- Custom CSS -->
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
+		<!-- JavaScript Helpers -->
+		<script>
+			function getQueryVariable(variable)
+			{
+			       var query = window.location.search.substring(1);
+			       var vars = query.split("&");
+			       for (var i=0;i<vars.length;i++) {
+			               var pair = vars[i].split("=");
+			               if(pair[0] == variable){return pair[1];}
+			       }
+			       return(false);
+			}
+		</script>
+
+		<!-- Schedule Control JavaScript -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#back").click(function() {
+					if(!$(this).hasClass('inactive')) {
+						var location = parseInt(getQueryVariable('location')) - 1;
+						window.location.href = "admindashboard.php?&location=" + location + "&schedule=true&back=true";
+					}
+				});
+				$("#forward").click(function() {
+					var location = parseInt(getQueryVariable('location')) + 1;
+					window.location.href = "admindashboard.php?&location=" + location + "&schedule=true";
+				});
+			});
+		</script>
+
 		<title>A+ Tutoring</title>
 
 		<?php
 			session_start();
 
+			// Get User Info
 			if(!isset($_SESSION['UserID']) || !isset($_SESSION['Name']) || !isset($_SESSION['Type']) || $_SESSION['Type'] != 'Admin') {
 				echo "<script>
 				alert('You must be logged in as an administrator to view this page');
@@ -34,12 +65,93 @@
 			if (isset($_SESSION['Name'])) {
 				$name = $_SESSION['Name'];
 				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php";
+					$profile = "tutordashboard.php?location=0";
 				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php";
+					$profile = "admindashboard.php?location=0";
 				} else {
-					$profile = "home.php";
+					$profile = "browsetutor.php";
 				}
+			}
+		?>
+
+		<?php
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$dbname = "aplus";
+
+			// Create connection
+			$conn = new mysqli($servername, $username, $password, $dbname);
+
+			// Check connection
+			if ($conn->connect_error) {
+			    die("Connection failed: " . $conn->connect_error);
+			}
+
+			// Get Tutors
+			$sql = "SELECT UserID, Name FROM tutor";
+			$result = $conn->query($sql);
+			$tutors = array();
+			if ($result->num_rows > 0) {
+				while($t = $result->fetch_assoc()){
+			    	$tutors[$t['UserID']] = $t['Name'];
+				}
+			}
+
+			// Get Student Names
+			$sql = "SELECT UserID, Name FROM user WHERE Type = 'Student'";
+			$result = $conn->query($sql);
+			$students = array();
+			if($result->num_rows > 0) {
+				while($s = $result->fetch_assoc()){
+			    	$students[$s['UserID']] = $s['Name'];
+				}
+			}
+
+			//Get Sessions
+			$monday = date("Y-m-d", strtotime('monday this week'));
+			$date = date("Y-m-d", strtotime($_GET['location'] . ' days'));
+			if(date('w', strtotime($date)) == 0) {
+				if(!empty($_GET['back'])) {
+					$location = $_GET['location'] - 1;
+					header("Location: admindashboard.php?location=" . $location . "&schedule=true&back=true");
+				} else {
+					$location = $_GET['location'] + 1;
+					header("Location: admindashboard.php?location=" . $location . "&schedule=true");
+				}
+			}
+
+			$back="";
+			if($date <= $monday) {
+				$back="inactive";
+			}
+
+			$current = $date;
+			if($_GET['location'] == 0) {
+				$current = "Today";
+			} else {
+				$current = date("l, F d", strtotime($current));
+			}
+
+			$sessions = array();
+			for($i = 0; $i < 12; $i++) {
+				$row = array();
+				for($y = 0; $y < count($tutors); $y++) {
+					array_push($row, "open");
+				}
+				array_push($sessions, $row);
+			}
+
+			$tutorIndex = 0;
+			foreach ($tutors as $id => $name) {
+				$sql = "SELECT StudentID, Block FROM session WHERE TutorID = " . $id . " AND Date='" . $date . "' ORDER BY Block";
+				$result = $conn->query($sql);
+				if($result->num_rows > 0) {
+					while($session = $result->fetch_assoc()){
+						$sessions[$session['Block']-1][$tutorIndex] = $students[$session['StudentID']];
+					}
+				}
+				$tutorIndex++;
 			}
 		?>
 
@@ -72,115 +184,45 @@
 				<div class="right-tabs clearfix" >
 	                <ul class="nav nav-tabs" id="dashboard">
 	                    <li class="active"><a href="#schedule" data-toggle="tab">Master Schedule</a></li>
-	                    <li><a href="#timecards" data-toggle="tab">Timecards</a></li>
 	                </ul>
 	                <div class="tab-content dashboard-tab">
 	                    <div class="tab-pane active" id="schedule">
 	                        <div class="row">
 	                            <div class="col-md-12">
-	                                <h3 class="subtitle"><span>&#9668</span> Today <span>&#9658</span></h3>
-	                              	                                <div class="table-responsive">
+	                                <h3 class="subtitle"><span class="<?=$back?>" id="back">&#9668</span> <?=$current?> <span id="forward">&#9658</span></h3>
+	                              	<div class="table-responsive">
 									<table class="table table-striped table-bordered">
 										<thead>
 											<tr>
 												<th></th>
-												<th>Branka Johnson</th>
-												<th>Kelsey Marshman</th>
-												<th>Frank Thompson</th>
-												<th>Bill Anderson</th>
+												<?
+													foreach ($tutors as $id => $name) {
+    													echo "<th>$name</th>";
+													}
+												?>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<th>2:00 - 3:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
-											<tr>
-												<th>3:00 - 4:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
-											<tr>
-												<th>4:00 - 5:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
-											<tr>
-												<th>5:00 - 6:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
-											<tr>
-												<th>6:00 - 7:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
-											<tr>
-												<th>7:00 - 8:00</th>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-												<td>John</td>
-											</tr>
+											<?
+												$start = 8;
+												$end = 9;
+												for($i = 0; $i < 12; $i++) {
+													echo "<tr>";
+
+													echo "<th>" . $start . ":00 - " . $end . ":00" . "</th>";
+													for($y = 0; $y < count($sessions[$i]); $y++) {
+														echo "<td>" . $sessions[$i][$y] . "</td>";
+													}
+													echo "</tr>";
+													$start ++;
+													$end ++;
+													if($start == 13) $start = 1;
+													if($end == 13) $end = 1;
+												}
+											?>
 										</tbody>
 									</table>
 								</div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="tab-pane" id="timecards">
-	                        <div class="row">
-	                            <div class="col-md-12">
-	                                <h3 class="subtitle"><span>&#9668</span> April 13 - April 18 <span>&#9658</span> </h3>
-	                                <div class="table-responsive">
-                  						<table class="table table-striped table-bordered table-condensed">
-											<thead>
-												<tr>
-													<th></th>
-													<th>Hours</th>
-													<th>Paycheck</th>
-													<th>Submitted?</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Branka Johnson</td>
-													<td>0</td>
-													<td>$0.00</td>
-													<td>no</td>
-												</tr>
-												<tr>
-													<td>Kelsey Marshman</td>
-													<td>0</td>
-													<td>$0.00</td>
-													<td>no</td>
-												</tr>
-												<tr>
-												<td>Frank Thompson</td>
-													<td>0</td>
-													<td>$0.00</td>
-													<td>no</td>
-												</tr>
-												<tr>
-												<td>Bill Anderson</td>
-													<td>0</td>
-													<td>$0.00</td>
-													<td>no</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
 	                            </div>
 	                        </div>
 	                    </div>
