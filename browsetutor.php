@@ -45,10 +45,8 @@
 
 		<!-- Get Data -->
 		<?php
-			$servername = "localhost";
-			$username = "root";
-			$password = "";
-			$dbname = "aplus";
+			//include variables from config.req.php for database connectivity
+			include_once 'config.req.php';
 
 			// Create connection
 			$conn = new mysqli($servername, $username, $password, $dbname);

@@ -9,10 +9,8 @@
 		$day = date("Y-m-d", strtotime($day . "+7 days"));
 	}
 
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "aplus";
+	//include variables from config.req.php for database connectivity
+	include_once 'config.req.php';
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
