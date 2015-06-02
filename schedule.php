@@ -51,25 +51,7 @@
 				$conn->close();
 			}
 
-			$name = "Profile";
-			$profile = "loginform.php";
-			if (isset($_SESSION['Name'])) {
-				$name = $_SESSION['Name'];
-				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php?location=0";
-				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php?location=0";
-				} else {
-					$profile = "home.php";
-				}
-			}
-
-			$log = "Login";
-			$url = "login.php";
-			if(isset($_SESSION['Name'])) {
-				$log= "Logout";
-				$url = "formHandling/logout.php";
-			}
+			include_once "navbar/topbarlogic.php";
 
 			$tutorName = htmlspecialchars($_GET["name"]);
 			$tutorID = htmlspecialchars($_GET["id"]);
@@ -152,21 +134,8 @@
 
 	<body>
 		
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div>
-					<ul class="nav navbar-nav">
-						<li><a href="home.php">Home</a></li>
-						<li><a href="browsetutor.php">Tutors</a></li>
-						<li><a href="contact.php">Contact Us</a></li> 
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
-						<li><a href="<?=$url?>"><span class="glyphicon glyphicon-log-in"></span> <?=$log?></a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+		<!-- load top nav bar -->
+		<?php include_once 'navbar/topbar.php' ?>
 
 		<div class="container-fluid vertical-center" id="content">
 

@@ -36,18 +36,7 @@
 				</script>";
 			}
 
-			$name = "Profile";
-			$profile = "loginform.php";
-			if (isset($_SESSION['Name'])) {
-				$name = $_SESSION['Name'];
-				if($_SESSION['Type'] == 'Tutor') {
-					$profile = "tutordashboard.php?location=0";
-				} else if($_SESSION['Type'] == 'Admin') {
-					$profile = "admindashboard.php?location=0";
-				} else {
-					$profile = "browsetutor.php";
-				}
-			}
+			include_once "navbar/topbarlogic.php";
 		?>
 
 		<?php
@@ -150,27 +139,17 @@
 				}
 				$tutorIndex++;
 			}
+
+			#set the name to appropiate name because $name used for other things here
+			$name = $_SESSION['Name'];
 		?>
 
 	</head>
 
 	<body>
 		
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div>
-					<ul class="nav navbar-nav">
-						<li><a href="home.php">Home</a></li>
-						<li><a href="browsetutor.php">Tutors</a></li>
-						<li><a href="contact.php">Contact Us</a></li> 
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$_SESSION['Name']?></a></li>
-						<li><a href="formHandling/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+		<!-- load top nav bar -->
+		<?php include_once 'navbar/topbar.php' ?>
 
 		<div class="container-fluid vertical-center" id="content">
 
