@@ -18,52 +18,10 @@
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
 		<!-- JavaScript Helpers -->
-		<script>
-			function getQueryVariable(variable)
-			{
-			       var query = window.location.search.substring(1);
-			       var vars = query.split("&");
-			       for (var i=0;i<vars.length;i++) {
-			               var pair = vars[i].split("=");
-			               if(pair[0] == variable){return pair[1];}
-			       }
-			       return(false);
-			}
-		</script>
+		<script src="clientScripting/helpers.js"></script>
 
 		<!-- Schedule Control JavaScript -->
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#back").click(function() {
-					if(getQueryVariable('location') > 0) {
-						var location = parseInt(getQueryVariable('location')) - 1;
-						window.location.href = "tutordashboard.php?&location=" + location + "&schedule=true";
-					}
-				});
-				$("#forward").click(function() {
-					var location = parseInt(getQueryVariable('location')) + 1;
-					window.location.href = "tutordashboard.php?&location=" + location + "&schedule=true";
-				});
-			});
-		</script>
-
-		<!-- Form Control JavaScript -->
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#all").click(function() {
-					if($(this).prop('checked')) {
-						$("form input:checkbox").prop('checked', true);
-					}
-					$('#none').prop('checked', false);
-				});
-				$("#none").click(function() {
-					if($(this).prop('checked')) {
-						$("form input:checkbox").prop('checked', false);
-					}
-					$('#none').prop('checked', true);
-				});
-			});
-		</script>
+		<script src="clientScripting/tutordashboard.js"></script>
 
 		<title>A+ Tutoring</title>
 

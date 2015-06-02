@@ -18,55 +18,10 @@
 		<link rel="stylesheet" type="text/css" href="style/main.css">
 
 		<!-- JavaScript Helpers -->
-		<script>
-			function getQueryVariable(variable)
-			{
-			       var query = window.location.search.substring(1);
-			       var vars = query.split("&");
-			       for (var i=0;i<vars.length;i++) {
-			               var pair = vars[i].split("=");
-			               if(pair[0] == variable){return pair[1];}
-			       }
-			       return(false);
-			}
-		</script>
+		<script src="clientScripting/helpers.js"></script>
 
 		<!-- Scheduling JavaScript -->
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('table').on('click', 'td', function(e) {
-					if(getQueryVariable('location') >= 0) {
-					    var day = $(e.delegateTarget.tHead.rows[0].cells[this.cellIndex]).text();
-					    var block = $(this).parent().parent().children().index($(this).parent()) + 1;
-					    var studentName = $(this).text();
-	  					var tutorID = $('#tutorID').val();
-	  					var tutorName = $('#tutorName').text();
-					    
-					    var user = $('#user').text().slice(1);
-					    if(user === studentName || studentName === "open") {
-					    	window.location.href = "schedule.php?name=" + tutorName + "&id=" + tutorID + "&day=" + day + "&block=" + block + "&student=" + studentName;
-						} else {
-							alert("Please select an open block to schedule a session or one of your sessions to cancel");
-						}
-					}});
-			});
-		</script>
-
-		<!-- Schedule Control JavaScript -->
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("#back").click(function() {
-					if(getQueryVariable('location') > 0) {
-						var location = parseInt(getQueryVariable('location')) - 1;
-						window.location.href = "tutordetail.php?id=" + getQueryVariable('id') + "&location=" + location + "&schedule=true";
-					}
-				});
-				$("#forward").click(function() {
-					var location = parseInt(getQueryVariable('location')) + 1;
-					window.location.href = "tutordetail.php?id=" + getQueryVariable('id') + "&location=" + location + "&schedule=true";
-				});
-			});
-		</script>
+		<script src="clientScripting/tutordetail.js"></script>
 
 		<title>A+ Tutoring</title>
 
