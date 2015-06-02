@@ -23,5 +23,5 @@
 	echo $sql;
 	$result = $conn->query($sql);
 
-	header("Location: tutordetail.php?id=" . $_POST['tutorID'] . "&schedule=true");
+	header("Location: tutordetail.php?id=" . $_POST['tutorID'] . "&schedule=true&location=0");
 ?>

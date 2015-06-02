@@ -22,5 +22,5 @@
 	$sql = "INSERT INTO session (TutorID, StudentID, Date, Block, Subject) VALUES " . $values;
 	$result = $conn->query($sql);
 
-	header("Location: tutordetail.php?id=" . $_POST['tutorID'] . "&schedule=true");
+	header("Location: tutordetail.php?id=" . $_POST['tutorID'] . "&schedule=true&location=0");
 ?>
