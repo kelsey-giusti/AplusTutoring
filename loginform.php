@@ -36,7 +36,7 @@
 			}
 
 			$log = "Login";
-			$url = "login.php";
+			$url = "formHandling/login.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
 				$url = "formHandling/logout.php";
