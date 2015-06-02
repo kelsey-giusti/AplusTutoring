@@ -48,7 +48,7 @@
 						} else {
 							alert("Please select an open block to schedule a session or one of your sessions to cancel");
 						}
-					}
+					}});
 			});
 		</script>
 
