@@ -67,6 +67,8 @@ src="https://www.google.com/maps/embed/v1/place?q=A%20Plus%20Student%20Books%2C%
  
 		</div>
 
+		<?php include_once 'footer/footer.php' ?>
+
 	</body>
 
 </html>

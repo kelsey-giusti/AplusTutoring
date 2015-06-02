@@ -236,6 +236,8 @@
  
 		</div>
 
+		<?php include_once 'footer/footer.php' ?>
+
 	</body>
 
 </html>
