@@ -158,6 +158,7 @@ td {
 
 #homeCreateUserLink {
 	float: right;
+	color: black;
 }
 
 #homeBrowse {
@@ -207,5 +208,7 @@ td {
 	height:250px;
 	width: 250px;
 	margin-left: 10px;
+	border: 2px solid grey;
+	border-radius: 10px;
 }
 /*END*/
