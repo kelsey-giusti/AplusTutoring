@@ -138,8 +138,6 @@
 
 		<div class="container-fluid vertical-center" id="content">
 
-			<img id="logo" src="images/logo.png" alt="logo" class=".img-responsive" />
-
 			<div class="container">
 				<h1 class="title">Tutor Dashboard</h1>
 				<div class="right-tabs clearfix" >

@@ -3,9 +3,9 @@
 }
 
 html, body {
-	background-color: #659D32;
-
+	background-color: #50BA3F;
 	width: 100%;
+	
 }
 
 td {
@@ -42,7 +42,7 @@ td {
 	border-radius: 0px;
 	border: none;
 
-	background-color: #659D32;
+	background-color: #50BA3F;
 
 	margin: 0;
 	padding: 0px 15px;
@@ -50,6 +50,12 @@ td {
 
 .navbar-default .navbar-nav>li>a {
   color: #ffffff;
+}
+
+#logo {
+
+	padding: 0;
+	margin-right: 10px;
 }
 
 #content {

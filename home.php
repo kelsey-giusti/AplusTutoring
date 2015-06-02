@@ -34,7 +34,6 @@
 
 		<div class="container-fluid vertical-center" id="content">
 
-			<img id="logo" src="images/logo.png" alt="logo" class=".img-responsive" />
 			
 			<div class="container">
 			
