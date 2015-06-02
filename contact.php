@@ -39,7 +39,7 @@
 			$url = "loginform.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 		?>
 	</head>
@@ -75,7 +75,7 @@
 					<div id="contactForm" class="col-sm-6">
 					
 						<h2>Contact form</h2>
-						 <form role="form" action="sendmail.php" method="post">
+						 <form role="form" action="formHandling/sendmail.php" method="post">
 							<div class="form-group">
 							  <label for="name">Name:</label>
 							  <input name="contactname" type="text" class="form-control" id="contactname" placeholder="Enter name*" required>

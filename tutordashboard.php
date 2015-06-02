@@ -196,7 +196,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$_SESSION['Name']?></a></li>
-						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="formHandling/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>
@@ -260,7 +260,7 @@
                     <div class="tab-pane" id="sessions">
                     	<h3 class="subtitle">Availability</h3>
                         <div class="row">
-                        	<form action="saveavailability.php" method="post">
+                        	<form action="formHandling/saveavailability.php" method="post">
 	                            <div class="col-md-10">
 	                                <div class="table-responsive">
 										<table class="table table-striped table-bordered table-condensed">

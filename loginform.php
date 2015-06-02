@@ -39,7 +39,7 @@
 			$url = "login.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 		?>
 	</head>
@@ -75,7 +75,7 @@
 					
 					<div id="homeLogin" class="col-md-8 col-md-offset-2">
 						<h2>Login</h2>
-						 <form role="form" action="login.php" method="post">
+						 <form role="form" action="formHandling/login.php" method="post">
 							<div class="form-group">
 							  <label for="email">Email:</label>
 							  <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">

@@ -7,7 +7,7 @@
 	}
 
 	//include variables from config.req.php for database connectivity
-	include_once 'config.req.php';
+	include_once '../config.req.php';
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -32,11 +32,11 @@
 			$_SESSION['Type'] = $row['Type'];
 
 			if ($_SESSION['Type'] == 'Tutor') {
-				header("Location: tutordashboard.php?location=0");
+				header("Location: ../tutordashboard.php?location=0");
 			} else if ($_SESSION['Type']== 'Admin') {
-				header("Location: admindashboard.php?location=0");
+				header("Location: ../admindashboard.php?location=0");
 			} else if ($_SESSION['Type'] == 'Student') {
-				header("Location: browsetutor.php");
+				header("Location: ../browsetutor.php");
 			} else {
 				echo "Error: Type not found";
 			}

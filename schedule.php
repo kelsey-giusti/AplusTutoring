@@ -68,7 +68,7 @@
 			$url = "login.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 
 			$tutorName = htmlspecialchars($_GET["name"]);
@@ -200,7 +200,7 @@
 						<h4 class="text-center"><?=$tutorName?></h2>
 						<h4 class="text-center"><?=$day?></h4>
 						<h4 class="text-center"><?=$time?></h4>
-						 <form role="form" action="schedulesession.php" method="post">
+						 <form role="form" action="formHandling/schedulesession.php" method="post">
 							<div class="form-group">
 							  <label for="subject">Subject:</label>
 							    <select class="form-control" name="subject" required>
@@ -236,7 +236,7 @@
 						<h4 class="text-center"><?=$tutorName?></h4>
 						<h4 class="text-center"><?=$day?></h4>
 						<h4 class="text-center"><?=$time?></h4>
-						 <form role="form" action="cancelsession.php" method="post">
+						 <form role="form" action="formHandling/cancelsession.php" method="post">
 							<div class="form-group">
 							  <label for="reason">Reason:</label>
 							    <select class="form-control" name="reason" required>

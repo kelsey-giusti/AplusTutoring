@@ -106,7 +106,7 @@
 				}
 			}
 
-			//Get Sessions
+			//Adjust for Sundays
 			$monday = date("Y-m-d", strtotime('monday this week'));
 			$date = date("Y-m-d", strtotime($_GET['location'] . ' days'));
 			if(date('w', strtotime($date)) == 0) {
@@ -119,23 +119,46 @@
 				}
 			}
 
+			//Deactivate back button if on monday of this week
 			$back="";
 			if($date <= $monday) {
 				$back="inactive";
 			}
 
+			//Display current day
 			$current = $date;
-			if($_GET['location'] == 0) {
+			$current = date("l, F d", strtotime($current));
+			if(date('Ymd') == date('Ymd', strtotime($current))) {
 				$current = "Today";
-			} else {
-				$current = date("l, F d", strtotime($current));
 			}
 
+			//Get Availability
+			$sql = "SELECT Block, TutorID FROM availability WHERE Day = " . date('w', strtotime($date)) . " ORDER BY Block, TutorID";
+			$result = $conn->query($sql);
+			$checks = array();
+			for($i = 0; $i < 12; $i++) {
+				$check = array();
+				for($y = 0; $y < 6; $y++) {
+					array_push($check, "");
+				}
+				array_push($checks, $check);
+			}
+			if($result->num_rows > 0) {
+				while($a = $result->fetch_assoc()){
+					$checks[$a['Block']-1][($a['TutorID'] - 1001)] = "checked";
+				}
+			}
+
+			//Get Sessions
 			$sessions = array();
 			for($i = 0; $i < 12; $i++) {
 				$row = array();
 				for($y = 0; $y < count($tutors); $y++) {
-					array_push($row, "open");
+					if($checks[$i][$y] == 'checked') {
+						array_push($row, "open");
+					} else {
+						array_push($row, "unavailable");
+					}
 				}
 				array_push($sessions, $row);
 			}
@@ -167,7 +190,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$_SESSION['Name']?></a></li>
-						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="formHandling/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>

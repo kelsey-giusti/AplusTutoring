@@ -39,7 +39,7 @@
 			$url = "loginform.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 		?>
 
@@ -104,7 +104,7 @@
 											"</div>
 											
 											<div class=\"col-md-4\">
-												<b>Subjects :</b>".
+												<b>Subjects: </b>".
 												$row["Subjects"].
 												"<br/><br/>
 												<b>Availibility:</b><br/>".

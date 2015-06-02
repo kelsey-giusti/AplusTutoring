@@ -1,7 +1,7 @@
 <?php
 
   //echo $_POST['name'] . " " . $_POST['from'] . " " . $_POST['telp'] . " " . $_POST['message'];
-  require 'PHPMailer/PHPMailerAutoload.php';
+  require '../PHPMailer/PHPMailerAutoload.php';
   
   $name = $_POST['contactname'];
   $emailfrom = $_POST['contactemail'];

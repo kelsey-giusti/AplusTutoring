@@ -39,7 +39,7 @@
 			$url = "login.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 		?>
 	</head>
@@ -75,7 +75,7 @@
 					
 					<div id="homeLogin" class="col-md-8 col-md-offset-2">
 						<h2>Create Account</h2>
-						 <form role="form" action="newuserlogin.php" method="post">
+						 <form role="form" action="formHandling/newuserlogin.php" method="post">
 						 	<div class="form-group">
 							  <label for="name">Name:</label>
 							  <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">

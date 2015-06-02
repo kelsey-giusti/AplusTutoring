@@ -90,7 +90,7 @@
 			$url = "loginform.php";
 			if(isset($_SESSION['Name'])) {
 				$log= "Logout";
-				$url = "logout.php";
+				$url = "formHandling/logout.php";
 			}
 
 			$back="";
