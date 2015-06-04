@@ -1,7 +1,19 @@
-# AplusTutoring
-Project for COEN 276
+Website for A+ Tutoring
 
-Notes on CSS
--use .title for main titles and .subtitle for smaller subtitles
-- .dashboard and .right-tabs are for tabbed panels
-- .vertical-center centers divs vertically
+Created by:
+Kelsey Giusti
+Kevin Widjaja
+
+hosted at: http://aplustutoring-kgiusti.rhcloud.com
+
+Sample tutor login:
+email: bjohnson@aplus.org
+password: bjohnson
+
+Sample admin login:
+email: kkim@aplus.org
+password: kkim
+
+Sample student login:
+email: shoffman@gmail.com
+password: shoffman

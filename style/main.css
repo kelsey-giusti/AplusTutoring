@@ -64,11 +64,11 @@ td {
 }
 
 .vertical-center {
-	min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
-	min-height: 90vh; /* These two lines are counted as one :-)       */
+	min-height: 88%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 88vh; /* These two lines are counted as one :-)       */
 
-	max-height: 90%;  /* Fallback for browsers do NOT support vh unit */
-	max-height: 90vh; /* These two lines are counted as one :-)       */
+	max-height: 88%;  /* Fallback for browsers do NOT support vh unit */
+	max-height: 88vh; /* These two lines are counted as one :-)       */
 
 	overflow-y: auto;
 
@@ -174,7 +174,7 @@ td {
 #homeBrowseWrapper {
 	text-align: center;
 }
-/*END*/
+
 /*CONTACT screen*/
 #contactForm {
 	background-color: #fff;
@@ -193,7 +193,7 @@ td {
 	color: #fff;
 	font-family: arial;
 }
-/*END*/
+
 /*TUTOR browse screen*/
 .tutorOverview {
 	background-color: #fff;
@@ -209,7 +209,7 @@ td {
 	border: 2px solid grey;
 	border-radius: 10px;
 }
-/**/
+
 /*TUTOR details*/
 .photoiddetails {
 	height:250px;
@@ -218,20 +218,17 @@ td {
 	border: 2px solid grey;
 	border-radius: 10px;
 }
-/*END*/
+
 /*footer*/
+footer{
+	padding: 5px;
+}
 #foottext {
 	color: #FFF;
+	font-size: 12px;
+	margin: 5px;
 }
-/*END*/
-/*profile*/
-#profile {
-	background-color: #fff;
-}
-#schedule {
-	background-color: #fff;
-}
-/*END*/
-.container {
-	margin-bottom: 10px;
+
+#foottext a {
+	color: #fff;
 }
