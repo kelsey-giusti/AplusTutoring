@@ -38,7 +38,7 @@
 			}
 		}
 	} else {
-		echo "Incorrect email and/or password";
+		header("Location: ../loginform.php?error=true");
 	}
 
 	$conn->close();

@@ -19,6 +19,10 @@
 
 		<title>A+ Tutoring</title>
 
+		<!-- Error Message JavaScript -->
+		<script src="clientScripting/helpers.js"></script>
+		<script src="clientScripting/login.js"></script>
+
 		<?php
 			session_start();
 			include_once "navbar/topbarlogic.php";
@@ -41,6 +45,7 @@
 					
 					<div id="homeLogin" class="col-md-8 col-md-offset-2">
 						<h2>Login</h2>
+						<h4 id="error">Incorrect email or password</h4>
 						 <form role="form" action="formHandling/login.php" method="post">
 							<div class="form-group">
 							  <label for="email">Email:</label>
