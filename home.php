@@ -45,8 +45,8 @@
 					<div class="col-md-6">
 						<h1 class="title">Welcome!</h1>
 						<p id="homeMsg">
-							This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message. This is our welcome message.This is our welcome message.
-							This is our welcome message.This is our welcome message.This is our welcome message.This is our welcome message.
+							A+ Tutoring is a private and group tutoring center. We specialize in college prepartory courses and testing.  
+							Many of our tutors are teachers at local high schools and are familiar with high school entrance exams, AP courses and testing as well as SAT and SAT Subject tests.
 						</p>
 						
 						<div id="homeBrowseWrapper">
