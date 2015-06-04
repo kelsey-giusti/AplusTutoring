@@ -77,7 +77,7 @@ td {
 }
 
 .title {
-	font-size: 64px;
+	font-size: 50px;
 	color: #ffffff;
 
 	margin-top: 45px;
@@ -224,3 +224,14 @@ td {
 	color: #FFF;
 }
 /*END*/
+/*profile*/
+#profile {
+	background-color: #fff;
+}
+#schedule {
+	background-color: #fff;
+}
+/*END*/
+.container {
+	margin-bottom: 10px;
+}
