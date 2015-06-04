@@ -11,7 +11,7 @@ $(document).ready(function(){
 		    if(user === studentName || studentName === "open") {
 		    	window.location.href = "schedule.php?name=" + tutorName + "&id=" + tutorID + "&day=" + day + "&block=" + block + "&student=" + studentName;
 			} else {
-				alert("Please select an open block to schedule a session or one of your sessions to cancel \n User: " + user);
+				alert("Please select an open block to schedule a session or one of your sessions to cancel");
 			}
 		}
 	});
