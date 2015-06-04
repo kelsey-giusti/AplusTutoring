@@ -10,7 +10,7 @@
 
 
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
+						<li><a id = "user" href="<?=$profile?>"><span class="glyphicon glyphicon-user"></span> <?=$name?></a></li>
 						<li><a href="<?=$url?>"><span class="glyphicon <?=$logicon?>"></span> <?=$log?></a></li>
 					</ul>
 				</div>
